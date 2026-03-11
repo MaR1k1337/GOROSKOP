@@ -5,49 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Гороскоп - Выберите знак зодиака</title>
     <style>
+        /* Темный космический фон */
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0a0a1a; /* Глубокий темно-синий/черный цвет */
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow: hidden; 
+            position: relative;
         }
+
+        /* --- ЭФФЕКТЫ ТУМАННОСТЕЙ (Nebula) --- */
+        .nebula {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px); /* Сильное размытие для эффекта облака */
+            opacity: 0.15; /* Делает их почти прозрачными */
+            z-index: 0;
+        }
+        .nebula-1 {
+            width: 600px; height: 600px;
+            top: -10%; left: -10%;
+            background: #ff6b35; /* Оранжево-красный */
+        }
+        .nebula-2 {
+            width: 400px; height: 400px;
+            bottom: -10%; right: -5%;
+            background: #00d4ff; /* Голубой/Циан */
+        }
+        .nebula-3 {
+            width: 500px; height: 500px;
+            top: 40%; right: 20%;
+            background: #ff2d55; /* Розово-красный */
+        }
+
+        /* --- СТИЛИ ДЛЯ ЗВЕЗД --- */
+        #starfield {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background: #fff;
+            animation: twinkle var(--dur) ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: var(--o1); transform: scale(1); }
+            100% { opacity: var(--o2); transform: scale(var(--s)); }
+        }
+
+        /* --- СТИЛИ КАРТОЧКИ --- */
         .card {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background: rgba(18, 18, 42, 0.85); /* Полупрозрачный темный фон карточки */
+            backdrop-filter: blur(10px); /* Эффект размытия стекла под карточкой */
+            border: 1px solid #2a2a55; /* Тонкая рамка */
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1); /* Легкое голубое свечение */
             max-width: 600px;
             width: 100%;
             text-align: center;
+            position: relative;
+            z-index: 10;
         }
+        
+        /* Стили текста внутри карточки */
+        .card h1 {
+            color: #e0e0f0;
+            margin-top: 0;
+        }
+        .card p {
+            color: #9090b0;
+            margin-bottom: 30px;
+        }
+
+        /* Сетка кнопок */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            margin-top: 20px;
         }
         .grid a {
             display: block;
-            padding: 12px;
-            background: #f4f4f9;
+            padding: 15px 10px;
+            background: rgba(30, 30, 58, 0.6); /* Темные кнопки */
+            border: 1px solid #2a2a55;
             text-decoration: none;
-            color: #333;
+            color: #e0e0f0;
             font-weight: bold;
             border-radius: 8px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
         .grid a:hover {
-            background: #667eea;
-            color: white;
-            transform: scale(1.05);
+            background: rgba(0, 212, 255, 0.15); /* Голубая подсветка при наведении */
+            border-color: #00d4ff;
+            color: #fff;
+            transform: translateY(-3px); /* Легкое поднятие кнопки */
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.2);
         }
     </style>
 </head>
 <body>
+    <!-- Цветные туманности -->
+    <div class="nebula nebula-1"></div>
+    <div class="nebula nebula-2"></div>
+    <div class="nebula nebula-3"></div>
+
+    <!-- Контейнер для звезд -->
+    <div id="starfield"></div>
+
     <div class="card">
         <h1>Выберите свой знак</h1>
         <p>Узнайте, что говорят звезды о вашем характере.</p>
@@ -66,6 +138,34 @@
             <a href="12.html">♓ Рыбы</a>
         </div>
     </div>
+
+    <script>
+        // Скрипт генерации звезд
+        const sf = document.getElementById('starfield');
+        const count = 200; 
+        
+        for (let i = 0; i < count; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            
+            const size = Math.random() * 2.5 + 0.5;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            
+            star.style.setProperty('--dur', (Math.random() * 4 + 2) + 's');
+            star.style.setProperty('--o1', (Math.random() * 0.3 + 0.1).toFixed(2));
+            star.style.setProperty('--o2', (Math.random() * 0.5 + 0.5).toFixed(2));
+            star.style.setProperty('--s', (Math.random() * 0.5 + 1).toFixed(2));
+            star.style.animationDelay = (Math.random() * 4) + 's';
+            
+            sf.appendChild(star);
+        }
+    </script>
 </body>
 </html>
+
+
 
